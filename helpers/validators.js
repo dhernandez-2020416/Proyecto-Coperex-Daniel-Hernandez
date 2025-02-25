@@ -40,3 +40,14 @@ export const loginValidator = [
         .notEmpty(),
     validateErrors
 ]
+
+export const createCategoryValidator = [
+    body('title', 'Title cannot be empty')
+        .notEmpty(),
+    body('description', 'Description cannot be empty')
+        .notEmpty(),
+    body('companies', 'Companies cannot be added')
+        .not()
+        .exists(),
+    validateErrors
+]
