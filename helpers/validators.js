@@ -51,3 +51,45 @@ export const createCategoryValidator = [
         .exists(),
     validateErrors
 ]
+
+export const createCompanyValidator = [
+    body('name', 'Name cannot be empty')
+        .notEmpty(),
+    body('impactLevel', 'ImpactLevet cannot be empty')
+        .notEmpty()
+        .isIn(['LOW', 'MEDIUM', 'HIGH'])
+        .withMessage('Impact Level must be one of: LOW, MEDIUM, HIGH'),
+    body('yearsInBusiness', 'YearInBussines cannot be empty')
+        .notEmpty()
+        .isInt()
+        .withMessage('Years in Business must be a number')
+        .isInt({ gt: 0 })
+        .withMessage('Years in Business must be greater than 0'),
+    body('category', 'Category cannot be empty')
+        .notEmpty()
+        .custom(objectIdValid),
+    validateErrors
+]
+
+export const updateCompanyValidator = [
+    body('name', 'Name cannot be empty')
+        .optional()
+        .notEmpty(),
+    body('impactLevel', 'ImpactLevet cannot be empty')
+        .optional()
+        .notEmpty()
+        .isIn(['LOW', 'MEDIUM', 'HIGH'])
+        .withMessage('Impact Level must be one of: LOW, MEDIUM, HIGH'),
+    body('yearsInBusiness', 'YearInBussines cannot be empty')
+        .optional()
+        .notEmpty()
+        .isInt()
+        .withMessage('Years in Business must be a number')
+        .isInt({ gt: 0 })
+        .withMessage('Years in Business must be greater than 0'),
+    body('category', 'Category cannot be empty')
+        .optional()
+        .notEmpty()
+        .custom(objectIdValid),
+    validateErrors
+]
