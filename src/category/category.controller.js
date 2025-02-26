@@ -38,13 +38,23 @@ export const createCategory = async(req, res) => {
 
 export const getCategories = async(req, res) => {
     try {
+        const { limit = 20, skip = 0 } = req.query
         const categories = await Category.find()
+        .populate(
+            {
+                path: 'companies',
+                select: 'name impactLevel yearInBusines'
+            }
+        )
+        .skip(skip)
+        .limit(limit)
 
         return res.send(
             {
                 success: true,
                 message: 'Categories found',
-                categories
+                categories,
+                total: categories.length
             }
         )
     } catch (err) {
