@@ -1,5 +1,7 @@
 import XlsxPopulate from 'xlsx-populate'
 import Company from '../company/company.model.js'
+import fs from 'fs'
+import path from 'path'
 
 export const createExcelOfCompanies = async (req, res) => {
     try {
@@ -27,18 +29,27 @@ export const createExcelOfCompanies = async (req, res) => {
                     workbook.sheet(0).cell(`E${row}`).value(company.category ? company.category.title : 'No Category')
                 })
 
-                res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                res.setHeader('Content-Disposition', 'attachment; filename=companies.xlsx')
+                const reportFolderPath = path.join(process.cwd(), 'src', 'report', 'Report')
 
-                return workbook.outputAsync().then((data) => {
-                    res.send(data)
-                })
+                const fileName = 'Report.xlsx'
+                const filePath = path.join(reportFolderPath, fileName)
+
+                await workbook.toFileAsync(filePath)
+
+                return res.send(
+                    {
+                        success: true,
+                        message: 'File has been saved successfully!'
+                    }
+                )
             })
     } catch (err) {
         console.error(err)
-        return res.status(500).send({
-            success: false,
-            message: 'General error'
-        })
+        return res.status(500).send(
+            {
+                success: false,
+                message: 'General error'
+            }
+        )
     }
 }
