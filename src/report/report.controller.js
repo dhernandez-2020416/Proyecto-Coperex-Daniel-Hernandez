@@ -31,8 +31,10 @@ export const createExcelOfCompanies = async (req, res) => {
 
                 const reportFolderPath = path.join(process.cwd(), 'src', 'report', 'Report')
 
-                const fileName = 'Report.xlsx'
-                const filePath = path.join(reportFolderPath, fileName)
+                const now = new Date();
+                const timestamp = now.toISOString().replace(/T/, '_').replace(/:/g, '-').split('.')[0]; // Formato: YYYY-MM-DD_HH-MM-SS
+                const fileName = `Report_${timestamp}.xlsx`;
+                const filePath = path.join(reportFolderPath, fileName);
 
                 await workbook.toFileAsync(filePath)
 
